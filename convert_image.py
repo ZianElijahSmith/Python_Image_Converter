@@ -4,10 +4,6 @@
 # So I am making my own, it's still a work in progress as I add features and extra image formats
 
 import subprocess
-# I am considering asking the user if they want to install packages, and if they say yes I'll run
-# command('pip3 install {package}') for GNU/linux and
-# command('pip install {package}') for Windows
-# Again, this is a work in progress
 command = subprocess.os.system
 
 # We need PIL and cv2 to convert from Webp to Jpeg
@@ -32,8 +28,8 @@ try:
     from webptools import cwebp
 except(ImportError):
     print("You need to install webptools")
-    print("Run 'pip3 install cv2' to install it on GNU/Linux")
-    print("Run 'pip install cv2' to install it on Windows")
+    print("Run 'pip3 install webptools' to install it on GNU/Linux")
+    print("Run 'pip install webptools' to install it on Windows")
     quit()
 
 def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
@@ -49,7 +45,7 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     
 
     # list of available image formats
-    available_image_format_list = ["jpeg"]
+    available_image_format_list = ["jpeg", "webp"]
 
     # Check if the requested format is available, if it isn't
     # then we say it isn't and quit
@@ -57,8 +53,14 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
         print("Sorry, that format not is not available")
         quit()
     
+    # from webp to jpeg
     if (image_type == "webp") & (format_we_want_image_to_be_in == "jpeg"):
         image = cv2.imread(path_to_image)
         #OpenCV uses BGR color space by default
         image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         Image.fromarray(image).save("{}.jpeg".format(path_to_image_being_converted), "jpeg")
+        
+    # from .jpg to webp
+    elif (image_type == ".jpg") & (format_we_want_image_to_be_in == "webp"):
+       cwebp(input_image=path_to_image_being_converted, output_image="{}.webp".format(path_to_image_being_converted), option="-q 80", logging="-v")
+        
