@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
-# I got tired of using a web converter like https://convertio.co/ to convert images
-# So I am making my own, it's still a work in progress as I add features and extra image formats
+# I got tired of using a web converter like https://convertio.co/ to convert images,
+# so I am making my own, it's still a work in progress as I add features and extra image formats.
+# Original intent was to just make a function I could pass arguments to, but now I'm considering expanding use cases
 
 import subprocess
 command = subprocess.os.system
