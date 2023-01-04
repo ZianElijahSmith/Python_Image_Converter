@@ -20,8 +20,8 @@ try:
     import cv2
 except(ImportError):
     print("You need to install cv2")
-    print("Run 'pip3 install cv2' to install it on GNU/Linux")
-    print("Run 'pip install cv2' to install it on Windows")
+    print("Run 'pip3 install opencv-python' to install it on GNU/Linux")
+    print("Run 'pip install opencv-python' to install it on Windows")
     quit()
     
 # we need to import cwebp from webptools to convert from jpeg to webp
