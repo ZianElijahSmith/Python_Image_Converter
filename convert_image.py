@@ -4,6 +4,7 @@
 # so I am making my own, it's still a work in progress as I add features and extra image formats.
 # Original intent was to just make a function I could pass arguments to, but now I'm considering expanding use cases
 
+# command is currently unused, but will probably be used later
 import subprocess
 command = subprocess.os.system
 
@@ -34,10 +35,27 @@ except(ImportError):
     quit()
 
 def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
+
+    # Below is the docstring that will show up if you do help(convert_image) in a terminal like iPython
     '''
-    convert_image will convert an image to a given format.
-    Available formats are: jpeg
+    def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     
+    
+    convert_image function will convert an image to a given format.
+    The arguments should be pretty self explanatory.
+    
+    path_to_image_being_converted is the path, example:
+    /home/user/Pictures/image.jpg
+    
+    format_we_want_image_to_be_in is, well, the format you want to convert the image to.
+    Current options are:
+    webp
+    jpg
+    
+    So far you can do:
+
+    from webp to jpeg
+    from .jpg to webp
     '''
     # image_type is the image extension, like .jpg, .webp, etc...
     # we grab the last 4 characters of filename to find out if
@@ -46,11 +64,11 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     
 
     # list of available image formats
-    available_image_format_list = ["jpeg", "webp"]
+    available_image_format_list = ["jpeg", "webp", ".jpg"]
 
     # Check if the requested format is available, if it isn't
     # then we say it isn't and quit
-    if image_format not in image_format_list:
+    if image_type not in available_image_format_list:
         print("Sorry, that format not is not available")
         quit()
     
@@ -59,9 +77,19 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
         image = cv2.imread(path_to_image)
         #OpenCV uses BGR color space by default
         image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        Image.fromarray(image).save("{}.jpeg".format(path_to_image_being_converted), "jpeg")
+        return Image.fromarray(image).save("{}.jpeg".format(path_to_image_being_converted), "jpeg")
+        
+        
+    # from jpeg to webp
+    elif (image_type == "jpeg") & (format_we_want_image_to_be_in == "webp"):
+       return cwebp(input_image=path_to_image_being_converted, output_image="{}.webp".format(path_to_image_being_converted), option="-q 80", logging="-v")
         
     # from .jpg to webp
     elif (image_type == ".jpg") & (format_we_want_image_to_be_in == "webp"):
-       cwebp(input_image=path_to_image_being_converted, output_image="{}.webp".format(path_to_image_being_converted), option="-q 80", logging="-v")
+       return cwebp(input_image=path_to_image_being_converted, output_image="{}.webp".format(path_to_image_being_converted), option="-q 80", logging="-v")
+       
+    else:
+        print("Sorry")
+        print("Either the format the image you want to convert is not yet available, or")
+        print("The format you want to convert image into is not yet available")
         
