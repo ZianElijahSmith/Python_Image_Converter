@@ -4,7 +4,7 @@
 # so I am making my own, it's still a work in progress as I add features and extra image formats.
 # Original intent was to just make a function I could pass arguments to, but now I'm considering expanding use cases
 
-# command is currently unused, but will probably be used later
+# command is currently used to install modules with pip if not already installed
 import subprocess, sys
 command = subprocess.os.system
 
