@@ -91,10 +91,16 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
         
     
     # from png to jpg
-    # this one doesn't work yet.
-    elif (image_type == ".png") & (format_we_want_image_to_be_in == ".jpeg"):
+    # THIS DOES NOT WORK YET
+    elif (image_type == ".png") & (format_we_want_image_to_be_in == ".jpg"):
         image = Image.open(path_to_image_being_converted).convert("RGB")
-        return image.save("{}.jpeg".format(path_to_image_being_converted), "jpeg")
+        return image.save("{}.jpg".format(path_to_image_being_converted), "jpg")
+        
+    # from .jpg to webp
+    # tested it works!
+    elif (image_type == ".jpg") & (format_we_want_image_to_be_in == "webp"):
+        image = Image.open(path_to_image_being_converted).convert("RGB")
+        return image.save("{}.webp".format(path_to_image_being_converted), "webp")
         
     # will be adding more once png to jpg works
         
