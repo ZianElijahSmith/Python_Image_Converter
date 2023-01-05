@@ -30,6 +30,7 @@ def ask():
         
 
 # We need PIL (from pillow)
+# https://pillow.readthedocs.io/en/stable/handbook/tutorial.html
 # I was using opencv-python and webptools but those modules were giving "permission denied" errors
 try:
     from PIL import Image
@@ -52,9 +53,6 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     /home/user/Pictures/image.jpg
     
     format_we_want_image_to_be_in is, well, the format you want to convert the image to.
-    Current options are:
-    webp
-    jpg
     
     So far you can do:
 
@@ -68,13 +66,14 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     from webp to .png
     
     '''
-    # image_type is the image extension, like .jpg, .webp, etc...
-    # we grab the last 4 characters of filename to find out if
+    # image_type is the image extension, like .jpg, webp, etc...
+    # we grab the last 4 characters of filename with an index to find out if
     # it's .jpg, jpeg, webp, etc.
     image_type = path_to_image_being_converted[-4:]
     
 
     # list of available image formats
+    # might add more
     available_image_format_list = ["jpeg", "webp", ".jpg", ".png"]
 
     # Check if the requested format is available, if it isn't
@@ -86,26 +85,70 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     # from jpg to png
     # tested, it works fine
     if (image_type == ".jpg") & (format_we_want_image_to_be_in == ".png"):
-        image = Image.open(path_to_image_being_converted).convert("RGB")
-        return image.save("{}.png".format(path_to_image_being_converted), "png")
-        
+        try:
+            image = Image.open(path_to_image_being_converted).convert("RGB")
+            return image.save("{}.png".format(path_to_image_being_converted), "png")
+        except(OSError):
+            print("OSError was raised\n")
+            print("PIL (pillow) gives an OSError when file can't be opened")
+            print("this usually happens when you try to convert a corrupted file")
+            quit()
     
     # from png to jpg
     # THIS DOES NOT WORK YET
     elif (image_type == ".png") & (format_we_want_image_to_be_in == ".jpg"):
-        image = Image.open(path_to_image_being_converted).convert("RGB")
-        return image.save("{}.jpg".format(path_to_image_being_converted), "jpg")
+        try:
+            image = Image.open(path_to_image_being_converted).convert("RGB")
+            return image.save("{}.jpg".format(path_to_image_being_converted), "jpg")
+        except(OSError):
+            print("OSError was raised\n")
+            print("PIL (pillow) gives an OSError when file can't be opened")
+            print("this usually happens when you try to convert a corrupted file")
+            quit()
         
     # from .jpg to webp
-    # tested it works!
+    # tested it with gthumb, it works!
+    
+    # You can't use imgage viewer on Debian to open webp
+    # you need to use gthumb to test | https://packages.debian.org/search?keywords=gthumb
+    # sudo apt install gthumb
     elif (image_type == ".jpg") & (format_we_want_image_to_be_in == "webp"):
-        image = Image.open(path_to_image_being_converted).convert("RGB")
-        return image.save("{}.webp".format(path_to_image_being_converted), "webp")
-        
-    # will be adding more once png to jpg works
-        
+        try:
+            image = Image.open(path_to_image_being_converted).convert("RGB")
+            return image.save("{}.webp".format(path_to_image_being_converted), "webp")
+        except(OSError):
+            print("OSError was raised\n")
+            print("PIL (pillow) gives an OSError when file can't be opened")
+            print("this usually happens when you try to convert a corrupted file")
+            quit()
+            
+    # from webp to .jpg
+    # Does not work yet
+    elif (image_type == "webp") & (format_we_want_image_to_be_in == ".jpg"):
+        try:
+            image = Image.open(path_to_image_being_converted).convert("RGB")
+            return image.save("{}.jpg".format(path_to_image_being_converted), "jpg")
+        except(OSError):
+            print("OSError was raised\n")
+            print("PIL (pillow) gives an OSError when file can't be opened")
+            print("this usually happens when you try to convert a corrupted file")
+            quit()
+            
+    # from webp to .png
+    # didn't work
+    elif (image_type == "webp") & (format_we_want_image_to_be_in == ".png"):
+        try:
+            image = Image.open(path_to_image_being_converted).convert("RGB")
+            return image.save("{}.png".format(path_to_image_being_converted), "png")
+        except(OSError):
+            print("OSError was raised\n")
+            print("PIL (pillow) gives an OSError when file can't be opened")
+            print("this usually happens when you try to convert a corrupted file")
+            quit()
+            
+            
     else:
         print("Sorry, an error occured, or that conversion is not available due to unsupported format")
-
-
-   
+        
+        
+        
