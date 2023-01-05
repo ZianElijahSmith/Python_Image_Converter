@@ -1,38 +1,42 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # I got tired of using a web converter like https://convertio.co/ to convert images,
 # so I am making my own, it's still a work in progress as I add features and extra image formats.
 # Original intent was to just make a function I could pass arguments to, but now I'm considering expanding use cases
 
 # command is currently unused, but will probably be used later
-import subprocess
+import subprocess, sys
 command = subprocess.os.system
 
-# We need PIL and cv2 to convert from Webp to Jpeg
+# asks the user if they want to install pillow if it isn't already installed
+def ask():
+    # strip() will remove extra spaces, lower() will lower the cases
+    answer = input("Do you want to install pillow now? y/n?  ").strip().lower()
+    # linux is for GNU/Linux
+    if (answer == 'y') and (sys.platform == 'linux'):
+        command("pip3 install pillow")
+    # win32 will work regardless if the windows is 32 or 64 bit
+    elif (answer == 'y') and (sys.platform == 'win32'):
+        command("pip install pillow")
+    # darwin is for mac
+    elif (answer == 'y') and (sys.platform == 'darwin'):
+        command("pip3 install pillow")
+    elif (answer == 'n'):
+        print("You need pillow to run this, exiting")
+        quit()
+    else:
+        print("please use y/n")
+        ask()
+        
+
+# We need PIL (from pillow)
+# I was using opencv-python and webptools but those modules were giving "permission denied" errors
 try:
     from PIL import Image
 except(ImportError):
-    print("You need to install pillow")
-    print("Run 'pip3 install pillow' to install it on GNU/Linux")
-    print("Run 'pip install pillow' to install it on Windows")
-    quit()
+    print("You need the pillow module to use this")
+    ask()
 
-try:
-    import cv2
-except(ImportError):
-    print("You need to install cv2")
-    print("Run 'pip3 install opencv-python' to install it on GNU/Linux")
-    print("Run 'pip install opencv-python' to install it on Windows")
-    quit()
-    
-# we need to import cwebp from webptools to convert from jpeg to webp
-try:
-    from webptools import cwebp
-except(ImportError):
-    print("You need to install webptools")
-    print("Run 'pip3 install webptools' to install it on GNU/Linux")
-    print("Run 'pip install webptools' to install it on Windows")
-    quit()
 
 def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
 
@@ -54,8 +58,15 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     
     So far you can do:
 
-    from webp to jpeg
+    from .jpg to .png
+    from .png to .jpg
+    
     from .jpg to webp
+    from webp to .jpg
+    
+    from png to webp
+    from webp to .png
+    
     '''
     # image_type is the image extension, like .jpg, .webp, etc...
     # we grab the last 4 characters of filename to find out if
@@ -64,7 +75,7 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     
 
     # list of available image formats
-    available_image_format_list = ["jpeg", "webp", ".jpg"]
+    available_image_format_list = ["jpeg", "webp", ".jpg", ".png"]
 
     # Check if the requested format is available, if it isn't
     # then we say it isn't and quit
@@ -72,24 +83,23 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
         print("Sorry, that format not is not available")
         quit()
     
-    # from webp to jpeg
-    if (image_type == "webp") & (format_we_want_image_to_be_in == "jpeg"):
-        image = cv2.imread(path_to_image)
-        #OpenCV uses BGR color space by default
-        image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        return Image.fromarray(image).save("{}.jpeg".format(path_to_image_being_converted), "jpeg")
+    # from jpg to png
+    # tested, it works fine
+    if (image_type == ".jpg") & (format_we_want_image_to_be_in == ".png"):
+        image = Image.open(path_to_image_being_converted).convert("RGB")
+        return image.save("{}.png".format(path_to_image_being_converted), "png")
         
+    
+    # from png to jpg
+    # this one doesn't work yet.
+    elif (image_type == ".png") & (format_we_want_image_to_be_in == ".jpeg"):
+        image = Image.open(path_to_image_being_converted).convert("RGB")
+        return image.save("{}.jpeg".format(path_to_image_being_converted), "jpeg")
         
-    # from jpeg to webp
-    elif (image_type == "jpeg") & (format_we_want_image_to_be_in == "webp"):
-       return cwebp(input_image=path_to_image_being_converted, output_image="{}.webp".format(path_to_image_being_converted), option="-q 80", logging="-v")
+    # will be adding more once png to jpg works
         
-    # from .jpg to webp
-    elif (image_type == ".jpg") & (format_we_want_image_to_be_in == "webp"):
-       return cwebp(input_image=path_to_image_being_converted, output_image="{}.webp".format(path_to_image_being_converted), option="-q 80", logging="-v")
-       
     else:
-        print("Sorry")
-        print("Either the format the image you want to convert is not yet available, or")
-        print("The format you want to convert image into is not yet available")
-        
+        print("Sorry, an error occured, or that conversion is not available due to unsupported format")
+
+
+   
