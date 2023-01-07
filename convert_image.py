@@ -55,7 +55,6 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     format_we_want_image_to_be_in is, well, the format you want to convert the image to.
     
     So far you can do:
-
     from .jpg to .png
     from .png to .jpg
     
@@ -96,6 +95,15 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     
     # from png to jpg
     # THIS DOES NOT WORK YET
+    # Does not work yet
+    # /usr/lib/python3/dist-packages/PIL/Image.py in save(self, fp, format, **params)
+    # 1981             save_handler = SAVE_ALL[format.upper()]
+    # 1982         else:
+    # -> 1983             save_handler = SAVE[format.upper()]
+    # 1984 
+    # 1985         if open_fp:
+    # KeyError: 'JPG'
+    
     elif (image_type == ".png") & (format_we_want_image_to_be_in == ".jpg"):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
@@ -124,6 +132,14 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
             
     # from webp to .jpg
     # Does not work yet
+    # /usr/lib/python3/dist-packages/PIL/Image.py in save(self, fp, format, **params)
+    # 1981             save_handler = SAVE_ALL[format.upper()]
+    # 1982         else:
+    # -> 1983             save_handler = SAVE[format.upper()]
+    # 1984 
+    # 1985         if open_fp:
+    # KeyError: 'JPG'
+
     elif (image_type == "webp") & (format_we_want_image_to_be_in == ".jpg"):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
@@ -135,7 +151,8 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
             quit()
             
     # from webp to .png
-    # didn't work
+    # convert_image('/home/ueser/test/chad.jpg.webp', '.png')
+    # Works fine
     elif (image_type == "webp") & (format_we_want_image_to_be_in == ".png"):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
@@ -149,6 +166,8 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
             
     else:
         print("Sorry, an error occured, or that conversion is not available due to unsupported format")
+        
+        
         
         
         
