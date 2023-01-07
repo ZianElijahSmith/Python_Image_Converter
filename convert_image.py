@@ -4,6 +4,8 @@
 # so I am making my own, it's still a work in progress as I add features and extra image formats.
 # Original intent was to just make a function I could pass arguments to, but now I'm considering expanding use cases
 
+# Note .jpg and .jpeg are the exact same file extension, no conversion is needed from jpeg to jpg
+
 # command is currently used to install modules with pip if not already installed
 import subprocess, sys
 command = subprocess.os.system
@@ -93,21 +95,13 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
             print("this usually happens when you try to convert a corrupted file")
             quit()
     
-    # from png to jpg
-    # THIS DOES NOT WORK YET
-    # Does not work yet
-    # /usr/lib/python3/dist-packages/PIL/Image.py in save(self, fp, format, **params)
-    # 1981             save_handler = SAVE_ALL[format.upper()]
-    # 1982         else:
-    # -> 1983             save_handler = SAVE[format.upper()]
-    # 1984 
-    # 1985         if open_fp:
-    # KeyError: 'JPG'
+    # from png to jpeg
+    # fixed, it works now
     
     elif (image_type == ".png") & (format_we_want_image_to_be_in == ".jpg"):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
-            return image.save("{}.jpg".format(path_to_image_being_converted), "jpg")
+            return image.save("{}.jpg".format(path_to_image_being_converted))
         except(OSError):
             print("OSError was raised\n")
             print("PIL (pillow) gives an OSError when file can't be opened")
@@ -143,7 +137,7 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     elif (image_type == "webp") & (format_we_want_image_to_be_in == ".jpg"):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
-            return image.save("{}.jpg".format(path_to_image_being_converted), "jpg")
+            return image.save("{}.jpg".format(path_to_image_being_converted), 'jpg')
         except(OSError):
             print("OSError was raised\n")
             print("PIL (pillow) gives an OSError when file can't be opened")
