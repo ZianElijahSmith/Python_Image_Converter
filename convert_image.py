@@ -85,7 +85,7 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     
     # from jpg to png
     # tested, it works fine
-    if (image_type == ".jpg") & (format_we_want_image_to_be_in == ".png"):
+    if ((image_type == ".jpg") & (format_we_want_image_to_be_in == ".png")) or ((image_type == ".png") & (format_we_want_image_to_be_in == ".jpeg")) or ((image_type == ".png") & (format_we_want_image_to_be_in == "jpeg")):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
             return image.save("{}.png".format(path_to_image_being_converted), "png")
