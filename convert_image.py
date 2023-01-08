@@ -85,7 +85,8 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     
     # from jpg to png
     # tested, it works fine
-    if ((image_type == ".jpg") & (format_we_want_image_to_be_in == ".png")) or ((image_type == ".png") & (format_we_want_image_to_be_in == ".jpeg")) or ((image_type == ".png") & (format_we_want_image_to_be_in == "jpeg")):
+    # Added extra options with the or conditional so that it will prevent an error if someone types jpg instead of .jpg.
+    if ((image_type == ".jpg") & (format_we_want_image_to_be_in == ".png")) or ((image_type == ".jpeg") & (format_we_want_image_to_be_in == ".png")) or ((image_type == "jpeg") & (format_we_want_image_to_be_in == ".png")):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
             return image.save("{}.png".format(path_to_image_being_converted), "png")
@@ -98,7 +99,7 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     # from png to jpeg
     # fixed, it works now
     
-    elif (image_type == ".png") & (format_we_want_image_to_be_in == ".jpg"):
+    elif ((image_type == ".png") & (format_we_want_image_to_be_in == ".jpg")) or ((image_type == ".png") & (format_we_want_image_to_be_in == ".jpeg")) or ((image_type == ".png") & (format_we_want_image_to_be_in == "jpeg")):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
             return image.save("{}.jpg".format(path_to_image_being_converted))
@@ -114,7 +115,7 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     # You can't use imgage viewer on Debian to open webp
     # you need to use gthumb to test | https://packages.debian.org/search?keywords=gthumb
     # sudo apt install gthumb
-    elif (image_type == ".jpg") & (format_we_want_image_to_be_in == "webp"):
+    elif ((image_type == ".jpg") & (format_we_want_image_to_be_in == "webp")) or ((image_type == ".jpeg") & (format_we_want_image_to_be_in == "webp")) or ((image_type == "jpeg") & (format_we_want_image_to_be_in == "webp")) or ((image_type == "jpeg") & (format_we_want_image_to_be_in == "webp")):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
             return image.save("{}.webp".format(path_to_image_being_converted), "webp")
@@ -134,7 +135,7 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     # 1985         if open_fp:
     # KeyError: 'JPG'
 
-    elif (image_type == "webp") & (format_we_want_image_to_be_in == ".jpg"):
+    elif ((image_type == "webp") & (format_we_want_image_to_be_in == ".jpg")) or ((image_type == "webp") & (format_we_want_image_to_be_in == ".jpeg")) or ((image_type == "webp") & (format_we_want_image_to_be_in == "jpeg")) or ((image_type == ".webp") & (format_we_want_image_to_be_in == ".jpg")):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
             return image.save("{}.jpg".format(path_to_image_being_converted), 'jpg')
@@ -147,7 +148,7 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     # from webp to .png
     # convert_image('/home/ueser/test/chad.jpg.webp', '.png')
     # Works fine
-    elif (image_type == "webp") & (format_we_want_image_to_be_in == ".png"):
+    elif ((image_type == "webp") & (format_we_want_image_to_be_in == ".png")) or ((image_type == "webp") & (format_we_want_image_to_be_in == "png")) or ((image_type == ".webp") & (format_we_want_image_to_be_in == ".png")):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
             return image.save("{}.png".format(path_to_image_being_converted), "png")
