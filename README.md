@@ -5,7 +5,7 @@ Please note .jpeg and .jpg are the exact same format, so there's no need to conv
 
 ## Background
 <br><br>
-I got tired of using a web converter like https://convertio.co/ to convert images, so I am making my own. It's still a work in progress as I add features, formats, and use cases. 
+I got tired of using a web converter like https://convertio.co/ to convert images, so I am making my own. Everything works now, but I might update it later.
 
 My initial intent when coding this was just simply making a function that I could import into iPython and then give the function:
 1. A path to the image I want to convert
