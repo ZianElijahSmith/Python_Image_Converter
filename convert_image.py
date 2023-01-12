@@ -56,12 +56,14 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
     
     format_we_want_image_to_be_in is, well, the format you want to convert the image to.
     
-    So far you can do:
-    from .jpg to .png
-    from .png to .jpg
+    .jpg and .jpeg are the exact same file extension, no conversion is needed from jpeg to jpg
     
-    from .jpg to webp
-    from webp to .jpg
+    So far you can do:
+    from .jpg/.jpeg to .png
+    from .png to .jpg/.jpeg
+    
+    from .jpg/.jpeg to webp
+    from webp to .jpg./jpeg
     
     from png to webp
     from webp to .png
@@ -109,7 +111,7 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
             print("this usually happens when you try to convert a corrupted file")
             quit()
         
-    # from .jpg to webp
+    # from .jpg/.jpeg to webp
     # tested it with gthumb, it works!
     
     # You can't use imgage viewer on Debian to open webp
@@ -126,19 +128,16 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
             quit()
             
     # from webp to .jpg
-    # Does not work yet
-    # /usr/lib/python3/dist-packages/PIL/Image.py in save(self, fp, format, **params)
-    # 1981             save_handler = SAVE_ALL[format.upper()]
-    # 1982         else:
-    # -> 1983             save_handler = SAVE[format.upper()]
-    # 1984 
-    # 1985         if open_fp:
-    # KeyError: 'JPG'
+    # It works now, tested.
+    # Needed to change
+    # return image.save("{}.jpg".format(path_to_image_being_converted), 'jpg')
+    # into 
+    # return image.save("{}.jpg".format(path_to_image_being_converted), 'jpeg')
 
     elif ((image_type == "webp") & (format_we_want_image_to_be_in == ".jpg")) or ((image_type == "webp") & (format_we_want_image_to_be_in == ".jpeg")) or ((image_type == "webp") & (format_we_want_image_to_be_in == "jpeg")) or ((image_type == ".webp") & (format_we_want_image_to_be_in == ".jpg")):
         try:
             image = Image.open(path_to_image_being_converted).convert("RGB")
-            return image.save("{}.jpg".format(path_to_image_being_converted), 'jpg')
+            return image.save("{}.jpg".format(path_to_image_being_converted), 'jpeg')
         except(OSError):
             print("OSError was raised\n")
             print("PIL (pillow) gives an OSError when file can't be opened")
@@ -161,8 +160,6 @@ def convert_image(path_to_image_being_converted, format_we_want_image_to_be_in):
             
     else:
         print("Sorry, an error occured, or that conversion is not available due to unsupported format")
-        
-        
         
         
         
